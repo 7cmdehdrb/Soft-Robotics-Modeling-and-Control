@@ -1,0 +1,1 @@
+The Young's modulus of Dragon Skin 30 typically ranges from 0.7 MPa to 1.2 MPa (700 kPa to 1200 kPa), depending on the specific testing method, strain range, and hyperelastic model used to fit its non-linear properties.

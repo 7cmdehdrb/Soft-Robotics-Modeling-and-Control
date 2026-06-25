@@ -514,6 +514,7 @@ def hyperparameter_tuning(
 
         try:
             # Create datasets
+            # from torch.utils.data import Dataset 상속한 SlidingWindowDataset 클래스 사용
             train_ds = SlidingWindowDataset(
                 train_df,
                 cfg,
@@ -643,6 +644,7 @@ def main():
 
     args: argparse.Namespace = ap.parse_args()
 
+    # Dataclass config
     cfg = TrainConfig(
         window=args.window,
         horizon=args.horizon,
@@ -671,7 +673,9 @@ def main():
     out_marker_ids = [1, 2, 3, 4, 5]  # predict others relative to marker_2
 
     # Split data
-    t1, v1, te1 = split_continuous_df(df1, args.train_ratio, args.val_ratio)
+    t1, v1, te1 = split_continuous_df(
+        df1, args.train_ratio, args.val_ratio
+    )  # Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]
     t2, v2, te2 = split_continuous_df(df2, args.train_ratio, args.val_ratio)
 
     train_df = pd.concat([t1, t2], axis=0, ignore_index=True)
