@@ -39,6 +39,8 @@ class CenterlineResult:
 HSV_PRESETS: dict[str, HSVRange] = {
     # The provided soro.png has a dark blue/purple soft manipulator body.
     "blue": HSVRange((90, 35, 20), (145, 255, 210)),
+    # Genesis soft robot color is bright cyan / sky blue.
+    "skyblue": HSVRange((85, 35, 40), (105, 255, 255)),
     # Useful when the target body/marker is orange in the paper-like setup.
     "orange": HSVRange((0, 60, 60), (30, 255, 255)),
     "green": HSVRange((35, 40, 40), (85, 255, 255)),
@@ -299,6 +301,45 @@ def estimate_centerline(
     if image is None:
         raise FileNotFoundError(f"Could not read image: {image_path}")
 
+    mask = build_mask(image, hsv_range)
+    edges, contour_points = extract_contour_points(mask, canny_low, canny_high)
+    skeleton = morphological_skeleton(mask)
+    skeleton_path = skeleton_main_path(skeleton)
+
+    if len(skeleton_path) >= 2:
+        initial_nodes = resample_polyline(skeleton_path, backbone_points)
+    else:
+        initial_nodes = pca_initial_nodes(contour_points, backbone_points)
+
+    som_points = train_som(
+        contour_points=contour_points,
+        initial_nodes=initial_nodes,
+        epochs=epochs,
+        alpha0=alpha0,
+        radius0=radius0,
+    )
+
+    return CenterlineResult(
+        image=image,
+        mask=mask,
+        edges=edges,
+        contour_points=contour_points,
+        som_points=som_points,
+        skeleton_points=skeleton_path,
+    )
+
+
+def estimate_centerline_from_image(
+    image_bgr: np.ndarray,
+    hsv_range: HSVRange,
+    backbone_points: int = 7,
+    epochs: int = 15,
+    alpha0: float = 0.01,
+    radius0: float = 3.0,
+    canny_low: int = 50,
+    canny_high: int = 150,
+) -> CenterlineResult:
+    image = image_bgr.copy()
     mask = build_mask(image, hsv_range)
     edges, contour_points = extract_contour_points(mask, canny_low, canny_high)
     skeleton = morphological_skeleton(mask)

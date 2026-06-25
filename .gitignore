@@ -370,3 +370,7 @@ AMENT_IGNORE
 *.db3
 
 /runs
+/data
+/docs
+!docs/**/*.png
+!docs/*.png
