@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<robot name="six_link_robot">
+    
+    <material name="black"><color rgba="0 0 0 0.7"/></material>
+    <material name="white"><color rgba="1 1 1 0.7"/></material>
+
+    <link name="base"/>
+
+    <link name="arm1">
+        <inertial>
+            <origin xyz="0.1666 0 0"/>
+            <mass value="0.33"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual>
+            <geometry><box size="0.3333 .1 .1"/></geometry>
+            <origin xyz="0.1666 0 0"/><material name="black"/>
+        </visual>
+        <collision>
+            <geometry><box size="0.3333 .1 .1"/></geometry>
+            <origin xyz="0.1666 0 0"/>
+        </collision>
+    </link>
+
+    <link name="arm2">
+        <inertial>
+            <origin xyz="0.1666 0 0"/><mass value="0.33"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/><material name="white"/></visual>
+        <collision><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/></collision>
+    </link>
+
+    <link name="arm3">
+        <inertial>
+            <origin xyz="0.1666 0 0"/><mass value="0.33"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/><material name="black"/></visual>
+        <collision><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/></collision>
+    </link>
+
+    <link name="arm4">
+        <inertial>
+            <origin xyz="0.1666 0 0"/><mass value="0.33"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/><material name="white"/></visual>
+        <collision><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/></collision>
+    </link>
+
+    <link name="arm5">
+        <inertial>
+            <origin xyz="0.1666 0 0"/><mass value="0.33"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/><material name="black"/></visual>
+        <collision><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/></collision>
+    </link>
+
+    <link name="arm6">
+        <inertial>
+            <origin xyz="0.1666 0 0"/><mass value="0.33"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/><material name="white"/></visual>
+        <collision><geometry><box size="0.3333 .1 .1"/></geometry><origin xyz="0.1666 0 0"/></collision>
+    </link>
+
+    <link name="endEffector"/>
+
+    <link name="world"/>
+
+    <joint name="world_to_base_joint" type="fixed">
+        <parent link="world"/>
+        <child link="base"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="joint1" type="continuous"><axis xyz="0 1 0"/><parent link="base"/><child link="arm1"/><origin xyz="0 0 0"/></joint>
+    <joint name="joint2" type="continuous"><axis xyz="0 1 0"/><parent link="arm1"/><child link="arm2"/><origin xyz="0.3333 0 0"/></joint>
+    <joint name="joint3" type="continuous"><axis xyz="0 1 0"/><parent link="arm2"/><child link="arm3"/><origin xyz="0.3333 0 0"/></joint>
+    <joint name="joint4" type="continuous"><axis xyz="0 1 0"/><parent link="arm3"/><child link="arm4"/><origin xyz="0.3333 0 0"/></joint>
+    <joint name="joint5" type="continuous"><axis xyz="0 1 0"/><parent link="arm4"/><child link="arm5"/><origin xyz="0.3333 0 0"/></joint>
+    <joint name="joint6" type="continuous"><axis xyz="0 1 0"/><parent link="arm5"/><child link="arm6"/><origin xyz="0.3333 0 0"/></joint>
+    <joint name="ee_joint" type="fixed"><parent link="arm6"/><child link="endEffector"/><origin xyz="0.3333 0 0"/></joint>
+
+</robot>

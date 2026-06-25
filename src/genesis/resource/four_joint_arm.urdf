@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<robot name="five_link_robot">
+
+    <material name="black">
+        <color rgba="0 0 0 0.7"/>
+    </material>
+    <material name="white">
+        <color rgba="1 1 1 0.7"/>
+    </material>
+
+    <link name="world"/>
+    <link name="base"/>
+    <link name="endEffector"/>
+
+    <!-- Link dimensions -->
+    <!-- length = 0.028 m (28 mm), width = 0.02 m, height = 0.02 m -->
+
+    <link name="arm1">
+        <inertial>
+            <origin xyz="0.014 0 0"/>
+            <mass value="0.10"/>
+            <inertia ixx="0.00002" ixy="0" ixz="0" iyy="0.00002" iyz="0" izz="0.00002"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+        </collision>
+    </link>
+
+    <link name="arm2">
+        <inertial>
+            <origin xyz="0.014 0 0"/>
+            <mass value="0.10"/>
+            <inertia ixx="0.00002" ixy="0" ixz="0" iyy="0.00002" iyz="0" izz="0.00002"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+        </collision>
+    </link>
+
+    <link name="arm3">
+        <inertial>
+            <origin xyz="0.014 0 0"/>
+            <mass value="0.10"/>
+            <inertia ixx="0.00002" ixy="0" ixz="0" iyy="0.00002" iyz="0" izz="0.00002"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+        </collision>
+    </link>
+
+    <link name="arm4">
+        <inertial>
+            <origin xyz="0.014 0 0"/>
+            <mass value="0.10"/>
+            <inertia ixx="0.00002" ixy="0" ixz="0" iyy="0.00002" iyz="0" izz="0.00002"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+        </collision>
+    </link>
+
+    <link name="arm5">
+        <inertial>
+            <origin xyz="0.014 0 0"/>
+            <mass value="0.10"/>
+            <inertia ixx="0.00002" ixy="0" ixz="0" iyy="0.00002" iyz="0" izz="0.00002"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.028 0.02 0.02"/>
+            </geometry>
+            <origin xyz="0.014 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="world_to_base_joint" type="fixed">
+        <parent link="world"/>
+        <child link="base"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- joint1: base에 바로 붙지만 회전시키지 않음 -->
+    <joint name="joint1" type="fixed">
+        <parent link="base"/>
+        <child link="arm1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- 실제 회전 가능한 조인트 4개 -->
+    <joint name="joint2" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="arm1"/>
+        <child link="arm2"/>
+        <origin xyz="0.028 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="joint3" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="arm2"/>
+        <child link="arm3"/>
+        <origin xyz="0.028 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="joint4" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="arm3"/>
+        <child link="arm4"/>
+        <origin xyz="0.028 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="joint5" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="arm4"/>
+        <child link="arm5"/>
+        <origin xyz="0.028 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="ee_joint" type="fixed">
+        <parent link="arm5"/>
+        <child link="endEffector"/>
+        <origin xyz="0.028 0 0" rpy="0 0 0"/>
+    </joint>
+
+</robot>
