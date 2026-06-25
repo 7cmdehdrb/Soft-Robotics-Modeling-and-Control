@@ -8,6 +8,7 @@ import os
 from dataclasses import dataclass
 from typing import List, Tuple, Optional, Dict
 import json
+import datetime
 
 from tqdm import tqdm
 import numpy as np
@@ -47,6 +48,62 @@ class TrainConfig:
 
     def to_dict(self) -> dict:
         return self.__dict__.copy()
+
+
+@dataclass
+class Args:
+    out_dir: str
+    window: int
+    horizon: int
+    stride: int
+
+    train_ratio: float
+    val_ratio: float
+
+    epochs: int
+    batch_size: int
+    lr: float
+    hidden_size: int
+    num_layers: int
+    dropout: float
+
+    input_col: str
+
+    tune: bool
+    n_trials: int
+
+
+def parse_args() -> Args:
+    ap = argparse.ArgumentParser()
+
+    ap.add_argument(
+        "--out_dir",
+        default=f"./runs/lstm_{datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}",
+    )
+    ap.add_argument("--window", type=int, default=60)
+    ap.add_argument("--horizon", type=int, default=1)
+    ap.add_argument("--stride", type=int, default=1)
+
+    # split strategy
+    ap.add_argument("--train_ratio", type=float, default=0.8)
+    ap.add_argument("--val_ratio", type=float, default=0.1)
+
+    ap.add_argument("--epochs", type=int, default=30)
+    ap.add_argument("--batch_size", type=int, default=256)
+    ap.add_argument("--lr", type=float, default=1e-3)
+    ap.add_argument("--hidden_size", type=int, default=128)
+    ap.add_argument("--num_layers", type=int, default=2)
+    ap.add_argument("--dropout", type=float, default=0.1)
+
+    ap.add_argument("--input_col", default="current_pressure")
+
+    # Hyperparameter tuning
+    ap.add_argument("--tune", action="store_true")
+    ap.add_argument("--n_trials", type=int, default=50)
+
+    ns = ap.parse_args()
+
+    return Args(**vars(ns))
 
 
 def set_seed(seed: int):
@@ -227,7 +284,12 @@ class LSTMRegressor(nn.Module):
 
 @torch.no_grad()
 def evaluate(
-    model, loader, device, pos_dim: int, cfg: TrainConfig, detailed: bool = False
+    model: LSTMRegressor,
+    loader: torch.utils.data.DataLoader,
+    device: torch.device,
+    pos_dim: int,
+    cfg: TrainConfig,
+    detailed: bool = False,
 ):
     model.eval()
     mse = nn.MSELoss()
@@ -613,8 +675,6 @@ def hyperparameter_tuning(
 
 
 def main():
-    import datetime
-
     ap = argparse.ArgumentParser()
 
     ap.add_argument(
@@ -642,7 +702,8 @@ def main():
     ap.add_argument("--tune", action="store_true", help="Enable hyperparameter tuning")
     ap.add_argument("--n_trials", type=int, default=50, help="Number of tuning trials")
 
-    args: argparse.Namespace = ap.parse_args()
+    # args: argparse.Namespace = ap.parse_args()
+    args = parse_args()
 
     # Dataclass config
     cfg = TrainConfig(

@@ -79,7 +79,7 @@ class LSTMPredictorNode(Node):
         super().__init__("lstm_predictor")
 
         # Configuration variables
-        model_path = "/home/min/project_SORO/runs/lstm_20260303-184332/best.pt"
+        model_path = "runs/lstm_20260304-164414/best.pt"
         self.window_size = 60
         self.init_point = np.array(
             [0.300912082195282, 0.3230445384979248, -0.446285218000412],
