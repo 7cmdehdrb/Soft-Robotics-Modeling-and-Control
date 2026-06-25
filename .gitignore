@@ -372,5 +372,6 @@ AMENT_IGNORE
 /runs
 /data
 /docs
+!docs/
 !docs/**/*.png
 !docs/*.png
